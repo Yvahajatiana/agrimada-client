@@ -1,3 +1,13 @@
-<p>
+<h3>
   category-form works!
-</p>
+</h3>
+<form [formGroup]="formGroup" (submit)="submit()" >
+  <mat-form-field>
+    <input matInput type="text" formControlName="CategoryName">
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput type="text" formControlName="Descriptions"></textarea>
+  </mat-form-field>
+  <input type="file" formControlName="Picture">
+  <button mat-raised-button type="submit" [disabled]="!formGroup.valid" color="primary">Submit</button>
+</form>
