@@ -11,14 +11,16 @@ export class CategoryFormComponent implements OnInit {
   @Input() value: Category;
   @Output() valueChange = new EventEmitter<Category>();
   @Input() errors: any[];
+  @Output() errorsChange = new EventEmitter<any[]>();
 
   formGroup: FormGroup;
+  private file: File;
 
   constructor(private fb: FormBuilder) {}
 
   ngOnInit() {
     this.formGroup = this.fb.group({
-      CategoryID: [this.value ? this.value.CategoryID : null],
+      CategoryID: [this.value ? this.value.CategoryID : 0],
       CategoryName: [
         this.value ? this.value.CategoryName : null,
         Validators.required
@@ -31,10 +33,15 @@ export class CategoryFormComponent implements OnInit {
     });
   }
 
-  submit() {
+  submit(): void {
     if (this.formGroup.valid) {
-      this.valueChange.emit(this.formGroup.value);
-    } else {
+      this.value = this.formGroup.value;
+      this.value.Picture = this.file;
+      this.valueChange.emit(this.value);
     }
+  }
+
+  pictureChange(value: HTMLInputElement): void {
+    this.file = value.files[0];
   }
 }
