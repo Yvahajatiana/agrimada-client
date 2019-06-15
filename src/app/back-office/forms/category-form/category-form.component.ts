@@ -3,7 +3,6 @@ import { Category } from '../../models/category';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BaseForm } from '../../models/base-form';
 
-
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
