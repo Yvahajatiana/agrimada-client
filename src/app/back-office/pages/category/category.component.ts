@@ -11,7 +11,7 @@ import { ICategory } from './category.model';
 export class CategoryComponent implements OnInit {
   categories: any[];
   category: any;
-  constructor(public dialog: MatDialog) { }
+  constructor(public dialog: MatDialog) {}
 
   ngOnInit() {
     this.categories = this.initCategories();
@@ -20,12 +20,16 @@ export class CategoryComponent implements OnInit {
   openCreateForm(): void {
     const dialogRef = this.dialog.open(CreateCategoryComponent, {
       width: '500px',
-      panelClass : 'formFieldWidth480',
-      data: {title:'',description:''}
+      panelClass: 'formFieldWidth480',
+      data: { title: '', description: '' }
     });
 
     dialogRef.afterClosed().subscribe(newCategory => {
-      if (newCategory === undefined || newCategory.title === undefined || newCategory.description === undefined) {
+      if (
+        newCategory === undefined ||
+        newCategory.title === undefined ||
+        newCategory.description === undefined
+      ) {
         return;
       }
       this.category = newCategory;
@@ -37,12 +41,16 @@ export class CategoryComponent implements OnInit {
   openEditForm(selectedCategory: ICategory): void {
     const dialogRef = this.dialog.open(CreateCategoryComponent, {
       width: '500px',
-      panelClass : 'formFieldWidth480',
+      panelClass: 'formFieldWidth480',
       data: selectedCategory
     });
 
     dialogRef.afterClosed().subscribe(newCategory => {
-      if (newCategory === undefined || newCategory.title === undefined || newCategory.description === undefined) {
+      if (
+        newCategory === undefined ||
+        newCategory.title === undefined ||
+        newCategory.description === undefined
+      ) {
         return;
       }
       console.log(newCategory);
@@ -55,7 +63,7 @@ export class CategoryComponent implements OnInit {
     console.log('call http service and send delete request');
   }
 
-  initCategories (): ICategory[] {
+  initCategories(): ICategory[] {
     return [
       {
         id: 1,
@@ -81,7 +89,6 @@ export class CategoryComponent implements OnInit {
         description: 'Category Description 4',
         supplierCount: 100
       }
-    ]
+    ];
   }
-
 }

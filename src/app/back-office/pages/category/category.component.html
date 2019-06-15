@@ -18,14 +18,26 @@
                   <th>Supplier count</th>
                 </tr>
               </thead>
-              <tbody *ngIf='categories'>
+              <tbody *ngIf="categories">
                 <tr *ngFor="let category of categories">
-                  <td>{{category.id}}</td>
-                  <td>{{category.title}}</td>
-                  <td>{{category.description}}</td>
-                  <td class="text-primary">{{category.supplierCount}}</td>
-                  <td><i class="material-icons clickable" (click)="openEditForm(category)">create</i></td>
-                  <td><i class="material-icons clickable" (click)="deleteCategory(category)">delete</i></td>
+                  <td>{{ category.id }}</td>
+                  <td>{{ category.title }}</td>
+                  <td>{{ category.description }}</td>
+                  <td class="text-primary">{{ category.supplierCount }}</td>
+                  <td>
+                    <i
+                      class="material-icons clickable"
+                      (click)="openEditForm(category)"
+                      >create</i
+                    >
+                  </td>
+                  <td>
+                    <i
+                      class="material-icons clickable"
+                      (click)="deleteCategory(category)"
+                      >delete</i
+                    >
+                  </td>
                 </tr>
               </tbody>
             </table>
