@@ -8,8 +8,17 @@ import { Category } from '../../models/category';
 })
 export class CategoryComponent implements OnInit {
   category: Category;
+  addUpdateErrors: any;
 
   constructor() {}
 
   ngOnInit() {}
+
+  submit(category: Category) {
+    if (category.CategoryID === 0) {
+      console.log('add');
+    } else {
+      console.log('update');
+    }
+  }
 }

@@ -1,7 +1,7 @@
 <p>
   category works!
 </p>
-<app-category-form [(value)]="category" ></app-category-form>
+<app-category-form [value]="category" (valueChange)="submit($event)"  [(errors)]="addUpdateErrors" ></app-category-form>
 <p>
   {{category | json}}
 </p>
