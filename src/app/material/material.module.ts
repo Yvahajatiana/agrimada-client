@@ -5,7 +5,12 @@ import {
   MatIconModule,
   MatInputModule,
   MatFormFieldModule,
-  MatCardModule
+  MatCardModule,
+  MatMenuTrigger,
+  MatMenuModule,
+  MatRadioModule,
+  MatCheckboxModule,
+  MatDialogModule
 } from '@angular/material';
 
 const modules = [
@@ -13,7 +18,11 @@ const modules = [
   MatIconModule,
   MatInputModule,
   MatFormFieldModule,
-  MatCardModule
+  MatCardModule,
+  MatMenuModule,
+  MatRadioModule,
+  MatCheckboxModule,
+  MatDialogModule
 ];
 
 @NgModule({
