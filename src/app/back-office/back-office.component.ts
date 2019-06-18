@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SettingsService } from './services/settings.service';
+import { SettingsService } from '../shared/services/settings.service';
 
 @Component({
   selector: 'app-back-office',
