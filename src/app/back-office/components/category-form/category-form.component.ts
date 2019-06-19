@@ -1,22 +1,21 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Category } from '../../models/category';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
+import { BaseForm } from '../../models/base-form';
+
 
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
   styleUrls: ['./category-form.component.scss']
 })
-export class CategoryFormComponent implements OnInit {
-  @Input() value: Category;
-  @Output() valueChange = new EventEmitter<Category>();
-  @Input() errors: any[];
-  @Output() errorsChange = new EventEmitter<any[]>();
-
-  formGroup: FormGroup;
+export class CategoryFormComponent extends BaseForm<Category>
+  implements OnInit {
   private file: File;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder) {
+    super();
+  }
 
   ngOnInit() {
     this.formGroup = this.fb.group({
