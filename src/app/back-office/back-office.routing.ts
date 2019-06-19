@@ -1,14 +1,16 @@
 import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
-import { BackOfficeComponent } from './pages/back-office/back-office.component';
+import { BackOfficeComponent } from './back-office.component';
 import { CategoryComponent } from './pages/category/category.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 const BackOfficeRoutes: Routes = [
   {
     path: '',
     component: BackOfficeComponent,
     children: [
-      { path: 'categories', component: CategoryComponent }
+      { path: 'categories', component: CategoryComponent },
+      { path: 'profile', component: ProfileComponent }
     ]
   }
 ];

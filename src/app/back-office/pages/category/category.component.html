@@ -1,7 +1,37 @@
-<p>
-  category works!
-</p>
-<app-category-form [value]="category" (valueChange)="submit($event)"  [(errors)]="addUpdateErrors" ></app-category-form>
-<p>
-  {{category | json}}
-</p>
+<div class="container">
+  <app-navbar title="Categories"></app-navbar>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header" (click)="openCreateForm()">
+          <i class="material-icons">assignment</i>
+        </div>
+        <div class="card-content">
+          <h4 class="card-title">All categories</h4>
+          <div class="table-responsive">
+            <table class="table">
+              <thead class="text-primary">
+                <tr>
+                  <th>Id</th>
+                  <th>Title</th>
+                  <th>Description</th>
+                  <th>Supplier count</th>
+                </tr>
+              </thead>
+              <tbody *ngIf='categories'>
+                <tr *ngFor="let category of categories">
+                  <td>{{category.id}}</td>
+                  <td>{{category.title}}</td>
+                  <td>{{category.description}}</td>
+                  <td class="text-primary">{{category.supplierCount}}</td>
+                  <td><i class="material-icons clickable" (click)="openEditForm(category)">create</i></td>
+                  <td><i class="material-icons clickable" (click)="deleteCategory(category)">delete</i></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
