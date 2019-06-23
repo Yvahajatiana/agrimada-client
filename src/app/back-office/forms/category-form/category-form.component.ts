@@ -34,7 +34,7 @@ export class CategoryFormComponent extends BaseForm<Category>
   submit(): void {
     if (this.formGroup.valid) {
       this.value = this.formGroup.value;
-      this.value.Picture = this.file;
+      this.value.Picture = this.file.name;
       this.valueChange.emit(this.value);
     }
   }
