@@ -12,6 +12,11 @@ import { MsgIconBtnComponent } from './components/msgiconbtn/msgiconbtn.componen
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SettingsService } from './services/settings.service';
+import { JwtModule } from '@auth0/angular-jwt';
+
+export function tokenGetter() {
+  return localStorage.getItem('access_token');
+}
 
 const modules = [
   HttpClientModule,

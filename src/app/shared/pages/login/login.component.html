@@ -57,6 +57,9 @@
             <div class="card-footer">
               <button mat-button type="submit">Sign Up</button>
             </div>
+            <mat-error *ngIf="wrongCredential">
+              Wrong password or username
+            </mat-error>
           </div>
         </form>
       </div>
