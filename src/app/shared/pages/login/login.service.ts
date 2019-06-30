@@ -6,7 +6,6 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class LoginService {
-  baseAddress: string = 'http://agrimada-laravel.test';
   constructor(private httpClient: HttpClient) {}
 
   login(credential: Credential): Observable<PassportCredential> {
@@ -14,7 +13,7 @@ export class LoginService {
     credential.client_secret = 'SuKEZ0xFU3BX3JWdm2O2KeitqeM7t0iHMOIjgnif';
     credential.grant_type = 'password';
     return this.httpClient.post<PassportCredential>(
-      `${this.baseAddress}/api/oauth/token`,
+      `/api/oauth/token`,
       credential
     );
   }

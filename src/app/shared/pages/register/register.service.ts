@@ -5,12 +5,11 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class RegisterService {
-  baseAddress: string = 'http://agrimada-laravel.test';
   constructor(private httpClient: HttpClient) {}
 
   register(user: RegisterModel): void {
     this.httpClient
-      .post<User>(`${this.baseAddress}/register`, user)
+      .post<User>(`/api/register`, user)
       .subscribe(response => {
         console.log(response);
       });
