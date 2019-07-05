@@ -2,6 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { CreateCategoryComponent } from './create.category.component';
 import { ICategory } from './category.model';
+import { Category } from '../../models/category';
+import { CategoryService } from '../../services/category.service';
 
 @Component({
   selector: 'app-category',
@@ -9,12 +11,14 @@ import { ICategory } from './category.model';
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
-  categories: any[];
+  categories: Category[];
   category: any;
-  constructor(public dialog: MatDialog) {}
+  addUpdateErrors: any;
+  constructor(public dialog: MatDialog, private categorySvc: CategoryService) {}
 
   ngOnInit() {
-    this.categories = this.initCategories();
+    // this.categories = this.initCategories();
+    this.refreshCategories();
   }
 
   openCreateForm(): void {
@@ -58,37 +62,30 @@ export class CategoryComponent implements OnInit {
     });
   }
 
-  deleteCategory(selectedCategory: ICategory): void {
+  deleteCategory(selectedCategory: Category): void {
     console.log(selectedCategory);
-    console.log('call http service and send delete request');
+    if(confirm(`Would you realy like to delete ${selectedCategory.CategoryName}`)) {
+      this.categorySvc.destroy(selectedCategory.CategoryID).subscribe((response) => {
+        this.categories = this.categories.filter((item) => item.CategoryID !== response.CategoryID);
+      });
+    }
+
   }
 
-  initCategories(): ICategory[] {
-    return [
-      {
-        id: 1,
-        title: 'Category Title 1',
-        description: 'Category Description 2',
-        supplierCount: 30
-      },
-      {
-        id: 2,
-        title: 'Category Title 2',
-        description: 'Category Description 2',
-        supplierCount: 10
-      },
-      {
-        id: 3,
-        title: 'Category Title 3',
-        description: 'Category Description 3',
-        supplierCount: 600
-      },
-      {
-        id: 4,
-        title: 'Category Title 4',
-        description: 'Category Description 4',
-        supplierCount: 100
-      }
-    ];
+  submit(category: Category) {
+    if (category.CategoryID === 0) {
+      console.log('add');
+      this.categorySvc.add(category).subscribe((response) => {
+        console.log(response);
+        this.categories.push(response);
+        this.category = null;
+      }, (error) => this.addUpdateErrors = error);
+    } else {
+      console.log('update');
+    }
+  }
+
+  refreshCategories() {
+    this.categorySvc.getAll({}).subscribe((response) => this.categories = response);
   }
 }

@@ -3,6 +3,7 @@ import { Category } from '../../models/category';
 import { FormBuilder, Validators } from '@angular/forms';
 import { BaseForm } from '../../models/base-form';
 
+
 @Component({
   selector: 'app-category-form',
   templateUrl: './category-form.component.html',
@@ -12,6 +13,8 @@ export class CategoryFormComponent extends BaseForm<Category>
   implements OnInit {
   private file: File;
 
+  @Input() categories: Category[];
+
   constructor(private fb: FormBuilder) {
     super();
   }
@@ -19,6 +22,7 @@ export class CategoryFormComponent extends BaseForm<Category>
   ngOnInit() {
     this.formGroup = this.fb.group({
       CategoryID: [this.value ? this.value.CategoryID : 0],
+      ParentID: [this.value ? this.value.ParentID : 0],
       CategoryName: [
         this.value ? this.value.CategoryName : null,
         Validators.required
