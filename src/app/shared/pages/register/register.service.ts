@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -8,12 +9,9 @@ export class RegisterService {
   baseAddress: string = 'http://agrimada-laravel.test';
   constructor(private httpClient: HttpClient) {}
 
-  register(user: RegisterModel): void {
-    this.httpClient
-      .post<User>(`${this.baseAddress}/register`, user)
-      .subscribe(response => {
-        console.log(response);
-      });
+  register(user: RegisterModel): Observable<User> {
+    console.log(user);
+    return this.httpClient.post<User>(`${this.baseAddress}/api/register`, user);
   }
 }
 
@@ -25,6 +23,7 @@ export interface RegisterModel {
 }
 
 export interface User {
+  id: number;
   name: string;
   email: string;
   updated_at: string;

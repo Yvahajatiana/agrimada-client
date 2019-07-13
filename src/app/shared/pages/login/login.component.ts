@@ -22,15 +22,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-    if (
-      localStorage.getItem('access_token') !== undefined &&
-      localStorage.getItem('access_token') !== null
-    ) {
-      console.log(localStorage.getItem('access_token'));
-      this.router.navigate(['/dashboard/categories']);
-    }
-  }
+  ngOnInit() {}
 
   loginBtn(credential: Credential) {
     console.log(credential);

@@ -1,13 +1,21 @@
 import { Injectable } from '@angular/core';
-import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(jwtHelper: JwtHelperService) {}
+  constructor() {}
 
   isLogged(): boolean {
+    if (this.getToken() === undefined || this.getToken() === null) {
+      console.log('false');
+      return false;
+    }
+    console.log('true');
     return true;
+  }
+
+  private getToken() {
+    return localStorage.getItem('access_token');
   }
 }

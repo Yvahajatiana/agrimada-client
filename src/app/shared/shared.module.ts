@@ -13,6 +13,8 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { SettingsService } from './services/settings.service';
 import { JwtModule } from '@auth0/angular-jwt';
+import { DialogboxComponent } from './components/dialogbox/dialogbox.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -22,7 +24,8 @@ const modules = [
   HttpClientModule,
   ReactiveFormsModule,
   MaterialModule,
-  RouterModule
+  RouterModule,
+  MatSnackBarModule
 ];
 
 @NgModule({
@@ -33,7 +36,8 @@ const modules = [
     HeaderComponent,
     MsgIconBtnComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    DialogboxComponent
   ],
   imports: [CommonModule, ...modules],
   exports: [
@@ -44,6 +48,7 @@ const modules = [
     NavbarComponent,
     SidebarComponent
   ],
+  entryComponents: [DialogboxComponent],
   providers: [SettingsService]
 })
 export class SharedModule {}
