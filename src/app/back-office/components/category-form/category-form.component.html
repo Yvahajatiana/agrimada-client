@@ -2,6 +2,11 @@
   category-form works!
 </h3>
 <form [formGroup]="formGroup" (submit)="submit()" >
+    <select matSelect formControlName="ParentID">
+      <option>Please select the parent</option>
+      <option *ngFor="let category of categories" [value]="category.CategoryID" >{{category.CategoryName}}</option>
+    </select>
+    <mat-error *ngFor="let errorKey of ['required', 'custom']" >{{getError('ParentID', errorKey)}}</mat-error>
   <mat-form-field>
     <input matInput type="text" formControlName="CategoryName">
     <mat-error *ngFor="let errorKey of ['required', 'custom']" >{{getError('CategoryName', errorKey)}}</mat-error>

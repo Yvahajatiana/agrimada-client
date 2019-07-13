@@ -13,17 +13,19 @@
               <thead class="text-primary">
                 <tr>
                   <th>Id</th>
-                  <th>Title</th>
-                  <th>Description</th>
-                  <th>Supplier count</th>
+                  <th>Name</th>
+                  <th>Descriptions</th>
+                  <th>File</th>
+                  <th>ParentID</th>
                 </tr>
               </thead>
               <tbody *ngIf="categories">
                 <tr *ngFor="let category of categories">
-                  <td>{{ category.id }}</td>
-                  <td>{{ category.title }}</td>
-                  <td>{{ category.description }}</td>
-                  <td class="text-primary">{{ category.supplierCount }}</td>
+                  <td>{{ category.CategoryID }}</td>
+                  <td>{{ category.CategoryName }}</td>
+                  <td>{{ category.Descriptions }}</td>
+                  <td>{{ category.Picture }}</td>
+                  <td class="text-primary">{{ category.ParentID }}</td>
                   <td>
                     <i
                       class="material-icons clickable"
@@ -46,4 +48,5 @@
       </div>
     </div>
   </div>
+  <app-category-form [value]="category" (valueChange)="submit($event)" [categories]="categories"  [(errors)]="addUpdateErrors" ></app-category-form>
 </div>

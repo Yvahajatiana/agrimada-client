@@ -3,4 +3,5 @@ export interface Category {
   CategoryName: string;
   Descriptions: string;
   Picture: File;
+  ParentID?: number;
 }

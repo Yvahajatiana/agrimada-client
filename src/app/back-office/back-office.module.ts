@@ -9,13 +9,15 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { CategoryFormComponent } from './components/category-form/category-form.component';
 
 @NgModule({
   declarations: [
     BackOfficeComponent,
     CategoryComponent,
     CreateCategoryComponent,
-    ProfileComponent
+    ProfileComponent,
+    CategoryFormComponent
   ],
   imports: [
     FormsModule,

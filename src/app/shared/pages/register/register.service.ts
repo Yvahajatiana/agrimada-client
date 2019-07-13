@@ -6,12 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class RegisterService {
-  baseAddress: string = 'http://agrimada-laravel.test';
   constructor(private httpClient: HttpClient) {}
 
   register(user: RegisterModel): Observable<User> {
     console.log(user);
-    return this.httpClient.post<User>(`${this.baseAddress}/api/register`, user);
+    return this.httpClient.post<User>(`/api/register`, user);
   }
 }
 
