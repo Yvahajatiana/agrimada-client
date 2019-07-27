@@ -23,11 +23,26 @@
                         type="text"
                         name="name"
                         matInput
-                        placeholder="Name"
+                        placeholder="Pseudo name"
                         formControlName="name"
                       />
                       <mat-error *ngIf="hasError('name', 'required')">
-                        *Sorry, we didn't quite catch your name
+                        *Please enter your email address to create an account
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <i class="material-icons">contact_phone</i>
+                    <mat-form-field color="accent" class="full-width">
+                      <input
+                        type="text"
+                        name="phone"
+                        matInput
+                        placeholder="Phone"
+                        formControlName="phone"
+                      />
+                      <mat-error *ngIf="hasError('phone', 'required')">
+                        *Sorry, we didn't quite catch your phone
                       </mat-error>
                     </mat-form-field>
                   </div>
@@ -46,6 +61,7 @@
                       </mat-error>
                     </mat-form-field>
                   </div>
+
                   <div class="row">
                     <i class="material-icons">lock_outline</i>
                     <mat-form-field color="accent" class="full-width">
@@ -63,6 +79,16 @@
                         Password is <strong>required</strong>
                       </mat-error>
                     </mat-form-field>
+                  </div>
+                  <div class="row">
+                    <mat-checkbox
+                      style="margin-left: 2px"
+                      formControlName="optinSupplier"
+                    >
+                      <p style="margin-left: 8px">
+                        I'm a supplier
+                      </p>
+                    </mat-checkbox>
                   </div>
                   <div class="row">
                     <mat-checkbox

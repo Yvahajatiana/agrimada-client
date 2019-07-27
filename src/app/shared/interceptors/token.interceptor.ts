@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 
 @Injectable()
 export class TokenInterceptor {
-
   constructor() {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<any> {
@@ -15,8 +14,12 @@ export class TokenInterceptor {
           `Bearer ${localStorage.getItem('access_token')}`
         )
       });
+
+      duplicate.headers.set('Accept', 'application/json');
+      console.log(duplicate);
       return next.handle(duplicate);
     }
+    console.log('nonono');
     return next.handle(req);
   }
 }

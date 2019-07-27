@@ -16,6 +16,8 @@ export class RegisterService {
 
 export interface RegisterModel {
   name: string;
+  phone: string;
+  role: string;
   email: string;
   password: string;
   password_confirmation: string;
@@ -23,7 +25,7 @@ export interface RegisterModel {
 
 export interface User {
   id: number;
-  name: string;
+  phone: string;
   email: string;
   updated_at: string;
   created_at: string;

@@ -1,30 +1,65 @@
-
-
-        <div class="card-header">
-            <i class="material-icons">assignment</i>
+<div class="card-header">
+  <i class="material-icons">assignment</i>
+</div>
+<div class="card-content">
+  <form [formGroup]="formGroup" (ngSubmit)="onSave(formGroup.value)">
+    <div class="row">
+      <div class="col-md-12">
+        <mat-form-field color="accent" class="full-width">
+          <input
+            matInput
+            type="text"
+            placeholder="Title"
+            name="title"
+            formControlName="title"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <mat-form-field color="accent" class="full-width">
+          <input
+            matInput
+            type="text"
+            placeholder="Description"
+            name="description"
+            formControlName="description"
+          />
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="file-input">
+          <input
+            [style.display]="'none'"
+            type="file"
+            formControlName="picture"
+            #picture
+            (change)="pictureChange(picture)"
+            accept=".jpg,.png,.jpeg"
+          />
+          <button mat-raised-button type="button" (click)="picture.click()">
+            Choise file
+          </button>
+          <mat-label>{{ (picture?.files)[0]?.name }}</mat-label>
         </div>
-        <div class="card-content">
-
-        <form [formGroup]="formGroup" (ngSubmit)="onSave(formGroup.value)">
-            <div class="row">
-                <div class="col-md-12">
-                    <mat-form-field color="accent">
-                        <input matInput type="text" placeholder="Title"  name="title" formControlName="title">
-                    </mat-form-field>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <mat-form-field color="accent">
-                        <input matInput type="text" placeholder="Description"  name="description" formControlName="description">
-                    </mat-form-field>
-                </div>
-            </div>
-            
-            <div class="row action-btn">
-                <button md-raised-button type="submit" class="btn btn-rose" [disabled]="!formGroup.valid">Create</button>
-            </div>
-        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="row action-btn">
+          <button
+            md-raised-button
+            type="submit"
+            class="btn btn-rose"
+            [disabled]="!formGroup.valid"
+          >
+            Create
+          </button>
         </div>
-    
-      
+      </div>
+    </div>
+  </form>
+</div>

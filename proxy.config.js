@@ -5,8 +5,8 @@ const PROXY_CONFIG = [
           "/oauth",
           "/config"
       ],
-      target: "http://127.0.0.1:8000",
-      secure: true,
+      target: "https://agrimada-laravel.test",
+      secure: false,
       changeOrigin: true
   }
 ];

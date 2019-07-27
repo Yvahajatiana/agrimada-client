@@ -7,18 +7,16 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class LoginService {
-  private credential: { client_id: string; client_secret: string; };
+  private credential: { client_id: string; client_secret: string };
   constructor(private httpClient: HttpClient) {
-    this.getCredential().subscribe((value) => {
+    this.getCredential().subscribe(value => {
       this.credential = value;
       console.log('credential', value);
     });
   }
 
   login(credential: Credential): Observable<PassportCredential> {
-    credential = {...credential, ...this.credential};
-    // credential.client_id = '2';
-    // credential.client_secret = 'SuKEZ0xFU3BX3JWdm2O2KeitqeM7t0iHMOIjgnif';
+    credential = { ...credential, ...this.credential };
     credential.grant_type = 'password';
     return this.httpClient.post<PassportCredential>(
       `/api/oauth/token`,

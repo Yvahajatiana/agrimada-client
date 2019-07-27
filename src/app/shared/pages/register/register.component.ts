@@ -22,8 +22,10 @@ export class RegisterComponent implements OnInit {
   ) {
     this.registerForm = this.fb.group({
       name: ['', Validators.required],
+      phone: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8)]],
+      optinSupplier: [false],
       optin: [false]
     });
   }
@@ -37,16 +39,42 @@ export class RegisterComponent implements OnInit {
   }
 
   register(registerFormValue: RegisterModel): void {
-    console.log(registerFormValue);
     this.isSubmited = true;
     registerFormValue.password_confirmation = registerFormValue.password;
-    this.registerService.register(registerFormValue).subscribe(response => {
+    if (this.registerForm.value.optinSupplier) {
+      registerFormValue.role = 'sup';
+    } else {
+      registerFormValue.role = 'cus';
+    }
+    const toPost: RegisterModel = {
+      name: registerFormValue.name,
+      email: registerFormValue.email,
+      phone: registerFormValue.phone,
+      role: registerFormValue.role,
+      password: registerFormValue.password,
+      password_confirmation: registerFormValue.password_confirmation
+    };
+
+    console.log(toPost);
+    this.registerService.register(toPost).subscribe(response => {
       console.log(response);
       if (response !== undefined && response.id !== undefined) {
-        this.snackBar.open('registration with success please valid your mail');
-        this.router.navigate(['/login']);
+        this.snackBar.open(
+          'registration with success please valid your mail',
+          'Yes',
+          {
+            duration: 3000
+          }
+        );
+        this.router.navigate(['/signin']);
       } else {
-        this.snackBar.open('Ooops!! registration failed please try again!');
+        this.snackBar.open(
+          'Ooops!! registration failed please try again!',
+          'Error',
+          {
+            duration: 3000
+          }
+        );
       }
     });
   }

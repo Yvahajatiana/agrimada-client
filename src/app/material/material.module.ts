@@ -11,7 +11,9 @@ import {
   MatRadioModule,
   MatCheckboxModule,
   MatDialogModule,
-  MatSelectModule
+  MatSelectModule,
+  MatProgressBarModule,
+  MatTabsModule
 } from '@angular/material';
 
 const modules = [
@@ -24,7 +26,9 @@ const modules = [
   MatRadioModule,
   MatCheckboxModule,
   MatDialogModule,
-  MatSelectModule
+  MatSelectModule,
+  MatProgressBarModule,
+  MatTabsModule
 ];
 
 @NgModule({
