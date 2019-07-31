@@ -7,16 +7,16 @@ import { RegisterloginGuardService } from './shared/services/registerlogin-guard
 
 const AppRoutes: Routes = [
   {
-    path: 'dashboard',
+    path: 'bo/dashboard',
     loadChildren: './back-office/back-office.module#BackOfficeModule'
   },
   {
-    path: 'signin',
+    path: 'bo/signin',
     component: LoginComponent,
     canActivate: [RegisterloginGuardService]
   },
   {
-    path: 'register',
+    path: 'bo/register',
     component: RegisterComponent,
     canActivate: [RegisterloginGuardService]
   },

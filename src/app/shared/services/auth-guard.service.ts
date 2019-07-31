@@ -10,7 +10,7 @@ export class AuthGuardService {
 
   canActivate() {
     if (this.auth.isLogged() === undefined) {
-      this.router.parseUrl('/signin');
+      this.router.parseUrl('bo/signin');
     }
 
     return true;

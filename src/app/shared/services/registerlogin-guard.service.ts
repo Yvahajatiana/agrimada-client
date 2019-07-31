@@ -10,7 +10,7 @@ export class RegisterloginGuardService implements CanActivate {
 
   canActivate() {
     if (this.authService.isLogged()) {
-      this.router.navigate(['/dashboard/categories']);
+      this.router.navigate(['bo/dashboard/categories']);
       return false;
     }
 

@@ -66,7 +66,7 @@ export class RegisterComponent implements OnInit {
             duration: 3000
           }
         );
-        this.router.navigate(['/signin']);
+        this.router.navigate(['bo/signin']);
       } else {
         this.snackBar.open(
           'Ooops!! registration failed please try again!',

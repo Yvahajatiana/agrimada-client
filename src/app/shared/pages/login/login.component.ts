@@ -34,7 +34,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('access_token', response.access_token);
         localStorage.setItem('refresh_token', response.access_token);
 
-        this.router.navigate(['/dashboard/categories']);
+        this.router.navigate(['bo/dashboard/categories']);
       } else {
         this.wrongCredential = true;
       }

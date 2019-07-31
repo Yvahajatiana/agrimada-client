@@ -6,7 +6,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 
 const BackOfficeRoutes: Routes = [
   {
-    path: '',
+    path: '/',
     component: BackOfficeComponent,
     children: [
       { path: 'categories', component: CategoryComponent },
