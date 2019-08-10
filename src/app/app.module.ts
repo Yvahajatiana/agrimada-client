@@ -7,6 +7,7 @@ import { SharedModule } from './shared/shared.module';
 import { AppRoutingModule } from './app.routing';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './shared/interceptors/token.interceptor';
+import { LaravelInterceptor } from './shared/interceptors/laravel.interceptor';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { TokenInterceptor } from './shared/interceptors/token.interceptor';
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: LaravelInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
