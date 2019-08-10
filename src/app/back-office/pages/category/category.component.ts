@@ -20,6 +20,7 @@ export class CategoryComponent implements OnInit {
   formGroup: FormGroup;
   selected: any;
   addUpdateErrors: any;
+  isLoading = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -93,11 +94,14 @@ export class CategoryComponent implements OnInit {
   }
 
   refreshCategories() {
+    this.isLoading = true;
     this.httpClient
       .get<any[]>('/api/bo/categories', { headers: this.headers })
       .subscribe(response => {
         this.categories = new MatTableDataSource<Category>(response);
         console.log(this.categories);
+        this.isLoading = false;
+        this.categories.paginator = this.paginator;
       });
   }
 
