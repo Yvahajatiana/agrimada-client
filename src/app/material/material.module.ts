@@ -13,7 +13,10 @@ import {
   MatDialogModule,
   MatSelectModule,
   MatProgressBarModule,
-  MatTabsModule
+  MatTabsModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule
 } from '@angular/material';
 
 const modules = [
@@ -28,7 +31,10 @@ const modules = [
   MatDialogModule,
   MatSelectModule,
   MatProgressBarModule,
-  MatTabsModule
+  MatTabsModule,
+  MatTableModule,
+  MatPaginatorModule,
+  MatSortModule
 ];
 
 @NgModule({

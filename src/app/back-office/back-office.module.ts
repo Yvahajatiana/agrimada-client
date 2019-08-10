@@ -10,6 +10,7 @@ import { MaterialModule } from '../material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CategoryFormComponent } from './components/category-form/category-form.component';
+import { ProductComponent } from './pages/product/product.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { CategoryFormComponent } from './components/category-form/category-form.
     CategoryComponent,
     CreateCategoryComponent,
     ProfileComponent,
-    CategoryFormComponent
+    CategoryFormComponent,
+    ProductComponent
   ],
   imports: [
     FormsModule,

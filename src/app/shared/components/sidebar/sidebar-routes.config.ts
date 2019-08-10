@@ -7,5 +7,6 @@ export const ROUTES = [
     icon: 'content_paste',
     children: null
   } /*,
-  { path: '', title: 'Settings', icon: 'settings', children: null }*/
+  { path: '', title: 'Settings', icon: 'settings', children: null }*/,
+  { path: 'products', title: 'Products', icon: 'person', children: null }
 ];

@@ -1,8 +1,11 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { CreateCategoryComponent } from './create.category.component';
 import { Category } from './category.model';
 import { CategoryService } from './category.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-category',
@@ -10,75 +13,121 @@ import { CategoryService } from './category.service';
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
-  categories: Category[];
-  category: any;
+  private headers = {
+    Authorization: `Bearer ${localStorage.getItem('access_token')}`
+  };
+  categories: MatTableDataSource<any>;
+  formGroup: FormGroup;
+  selected: any;
   addUpdateErrors: any;
-  constructor(
-    public dialog: MatDialog,
-    private categoryService: CategoryService
-  ) {}
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+  displayedColumns: string[] = ['CategoryName', 'Descriptions', 'Actions'];
+
+  constructor(private fb: FormBuilder, private httpClient: HttpClient) {
+    this.formGroup = this.fb.group({
+      categoryName: ['', Validators.required],
+      descriptions: ['', Validators.required],
+      picture: ['']
+    });
+  }
 
   ngOnInit() {
     // this.categories = this.initCategories();
     this.refreshCategories();
   }
 
-  openCreateForm(): void {
-    const dialogRef = this.dialog.open(CreateCategoryComponent, {
-      width: '500px',
-      panelClass: 'formFieldWidth480',
-      data: { title: '', description: '' }
+  openForm(): void {
+    this.selected = undefined;
+    this.formGroup.setValue({
+      categoryName: '',
+      descriptions: '',
+      picture: ''
     });
-
-    dialogRef.afterClosed().subscribe(newCategory => {
-      if (
-        newCategory === undefined ||
-        newCategory.title === undefined ||
-        newCategory.description === undefined
-      ) {
-        return;
-      }
-      this.categoryService.create(newCategory).subscribe(response => {
-        console.log(response);
-      });
-    });
+    document.getElementById('edit-btn').click();
   }
 
-  openEditForm(selectedCategory: Category): void {
-    const dialogRef = this.dialog.open(CreateCategoryComponent, {
-      width: '500px',
-      panelClass: 'formFieldWidth480',
-      data: selectedCategory
-    });
-
-    dialogRef.afterClosed().subscribe(newCategory => {
-      if (
-        newCategory === undefined ||
-        newCategory.title === undefined ||
-        newCategory.description === undefined
-      ) {
-        return;
-      }
-      console.log(newCategory);
-      console.log('call http service post data to server');
-      this.categoryService.create(newCategory).subscribe(response => {
-        console.log(response);
-      });
-    });
+  closeForm(): void {
+    document.getElementById('modal-close').click();
   }
 
-  deleteCategory(selectedCategory: Category): void {
-    console.log(selectedCategory);
-    if (confirm(`Would you realy like to delete ${selectedCategory.title}`)) {
-      this.categoryService.delete(selectedCategory.id).subscribe(response => {
-        console.log(response);
-      });
+  openEditForm(selectedCategory: Category): void {}
+
+  onDelete(selectedCategory: Category): void {}
+
+  onFileSelect(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.formGroup.get('picture').setValue(file);
     }
   }
 
+  onSave(category) {
+    console.log(category);
+    const formData = new FormData();
+    formData.append('CategoryName', category.categoryName);
+    formData.append('Descriptions', category.descriptions);
+    if (category.picture instanceof File) {
+      formData.append('Picture', category.picture);
+    }
+
+    if (this.selected !== undefined) {
+      formData.append('CategoryID', this.selected.CategoryID);
+      formData.append('_method', 'put');
+      this.onUpdate(formData, this.selected.CategoryID);
+    } else {
+      this.onCreate(formData);
+    }
+  }
+
+  onCreate(category) {
+    this.httpClient
+      .post<Category>('/api/bo/categories', category, {
+        headers: this.headers
+      })
+      .subscribe(response => {
+        this.refreshCategories();
+        this.closeForm();
+      });
+  }
+
   refreshCategories() {
-    this.categoryService
-      .getAll()
-      .subscribe(response => (this.categories = response));
+    this.httpClient
+      .get<any[]>('/api/bo/categories', { headers: this.headers })
+      .subscribe(response => {
+        this.categories = new MatTableDataSource<Category>(response);
+        console.log(this.categories);
+      });
+  }
+
+  deleteCategory(id: number) {
+    this.httpClient
+      .delete(`/api/bo/categories/${id}`, { headers: this.headers })
+      .subscribe(response => {
+        console.log(response);
+        this.refreshCategories();
+      });
+  }
+
+  editCategory(id: number) {
+    this.selected = this.categories.data.find(x => x.CategoryID === id);
+    console.log(this.selected);
+    this.formGroup.setValue({
+      categoryName: this.selected.CategoryName,
+      descriptions: this.selected.Descriptions,
+      picture: this.selected.Picture
+    });
+    document.getElementById('edit-btn').click();
+  }
+
+  onUpdate(category, id) {
+    this.httpClient
+      .post(`/api/bo/categories/${id}`, category, { headers: this.headers })
+      .subscribe(response => {
+        console.log(response);
+        this.refreshCategories();
+        this.closeForm();
+      });
   }
 }
