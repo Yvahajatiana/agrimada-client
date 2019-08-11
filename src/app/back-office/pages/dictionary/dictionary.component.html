@@ -1,0 +1,22 @@
+<p>
+  dictionary works!
+</p>
+<button (click)="initForm()" mat-raised-button mat-icon-button color="primary" *ngIf="dictionary == null">
+  <mat-icon>add</mat-icon>
+</button>
+<app-dictionary-form *ngIf="dictionary"
+  [(value)]="dictionary"
+  (valueChange)="submited($event)"
+  [errors]="errors"
+></app-dictionary-form>
+<ul>
+  <li *ngFor="let dictionary of dictionaries | async">
+    {{ dictionary.DictionaryValue + ' (' + dictionary.DictionaryKey + ')' }}
+    <i class="material-icons clickable"
+      (click)="editDictionary(dictionary)"
+      >create</i>
+    <i class="material-icons clickable"
+      (click)="deleteDictionary(dictionary)"
+      >delete</i>
+  </li>
+</ul>

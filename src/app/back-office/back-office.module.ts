@@ -11,6 +11,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CategoryFormComponent } from './components/category-form/category-form.component';
 import { ProductComponent } from './pages/product/product.component';
+import { DictionaryComponent } from './pages/dictionary/dictionary.component';
+import { DictionaryFormComponent } from './components/dictionary-form/dictionary-form.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { ProductComponent } from './pages/product/product.component';
     CreateCategoryComponent,
     ProfileComponent,
     CategoryFormComponent,
-    ProductComponent
+    ProductComponent,
+    DictionaryComponent,
+    DictionaryFormComponent
   ],
   imports: [
     FormsModule,
