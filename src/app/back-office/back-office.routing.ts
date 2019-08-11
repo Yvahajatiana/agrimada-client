@@ -5,6 +5,7 @@ import { CategoryComponent } from './pages/category/category.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { ProductComponent } from './pages/product/product.component';
 import { DictionaryComponent } from './pages/dictionary/dictionary.component';
+import { MenuComponent } from './pages/menu/menu.component';
 
 const BackOfficeRoutes: Routes = [
   {
@@ -15,6 +16,7 @@ const BackOfficeRoutes: Routes = [
       { path: 'profile', component: ProfileComponent },
       { path: 'products', component: ProductComponent },
       { path: 'dictionaries', component: DictionaryComponent },
+      { path: 'menus', component: MenuComponent },
     ]
   }
 ];

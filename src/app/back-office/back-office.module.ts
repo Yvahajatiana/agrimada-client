@@ -13,6 +13,8 @@ import { CategoryFormComponent } from './components/category-form/category-form.
 import { ProductComponent } from './pages/product/product.component';
 import { DictionaryComponent } from './pages/dictionary/dictionary.component';
 import { DictionaryFormComponent } from './components/dictionary-form/dictionary-form.component';
+import { MenuComponent } from './pages/menu/menu.component';
+import { MenuFormComponent } from './components/menu-form/menu-form.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,9 @@ import { DictionaryFormComponent } from './components/dictionary-form/dictionary
     CategoryFormComponent,
     ProductComponent,
     DictionaryComponent,
-    DictionaryFormComponent
+    DictionaryFormComponent,
+    MenuComponent,
+    MenuFormComponent
   ],
   imports: [
     FormsModule,
