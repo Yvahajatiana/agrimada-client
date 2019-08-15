@@ -1,5 +1,6 @@
 <div class="container">
   <app-navbar title="Categories"></app-navbar>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   <div class="row">
     <div class="col-md-12">
       <div class="card">
@@ -53,48 +54,12 @@
               </table>
 
               <mat-paginator
-                [pageSizeOptions]="[2, 10]"
+                [pageSizeOptions]="[5, 10]"
                 showFirstLastButtons
               ></mat-paginator>
             </div>
           </div>
         </div>
-        <!--
-            <table class="table">
-              <thead class="text-primary">
-                <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Descriptions</th>
-                  <th>File</th>
-                  <th>ParentID</th>
-                </tr>
-              </thead>
-              <tbody *ngIf="categories">
-                <tr *ngFor="let category of categories">
-                  <td>{{ category.CategoryID }}</td>
-                  <td>{{ category.CategoryName }}</td>
-                  <td>{{ category.Descriptions }}</td>
-                  <td>{{ category.Picture }}</td>
-                  <td class="text-primary">{{ category.ParentID }}</td>
-                  <td>
-                    <i
-                      class="material-icons clickable"
-                      (click)="openEditForm(category)"
-                      >create</i
-                    >
-                  </td>
-                  <td>
-                    <i
-                      class="material-icons clickable"
-                      (click)="deleteCategory(category)"
-                      >delete</i
-                    >
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-            -->
       </div>
     </div>
   </div>
@@ -171,6 +136,7 @@
           </button>
           <button type="submit" class="btn btn-primary">Save changes</button>
         </div>
+        <mat-spinner class="waiter"></mat-spinner>
       </form>
     </div>
   </div>

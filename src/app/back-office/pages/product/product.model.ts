@@ -1,8 +1,8 @@
 export interface Product {
-  id: number;
-  name: string;
-  description: string;
-  quantity: number;
-  category: string;
-  harvestDate: string;
+  ProductID: number;
+  ProductName: string;
+  ProductDescriptions: string;
+  Quantity: number;
+  CategoryID: string;
+  Harvest_Month: string;
 }

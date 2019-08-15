@@ -1,5 +1,6 @@
 <div class="container">
   <app-navbar title="Product"></app-navbar>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
   <div class="row">
     <div class="col-md-12">
       <div class="card">
@@ -12,50 +13,68 @@
             <div class="mat-elevation-z8">
               <table mat-table [dataSource]="dataSource" matSort>
                 <!-- Position Column -->
-                <ng-container matColumnDef="name">
+                <ng-container matColumnDef="ProductName">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Name
                   </th>
-                  <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.ProductName }}
+                  </td>
                 </ng-container>
 
                 <!-- Name Column -->
-                <ng-container matColumnDef="description">
+                <ng-container matColumnDef="ProductDescriptions">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Description
                   </th>
                   <td mat-cell *matCellDef="let element">
-                    {{ element.description }}
+                    {{ element.ProductDescriptions }}
                   </td>
                 </ng-container>
 
                 <!-- Weight Column -->
-                <ng-container matColumnDef="quantity">
+                <ng-container matColumnDef="Quantity">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Quantity
                   </th>
                   <td mat-cell *matCellDef="let element">
-                    {{ element.quantity }}
+                    {{ element.Quantity }}
                   </td>
                 </ng-container>
 
                 <!-- Symbol Column -->
-                <ng-container matColumnDef="category">
+                <ng-container matColumnDef="CategoryID">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Category
                   </th>
                   <td mat-cell *matCellDef="let element">
-                    {{ element.category }}
+                    {{ getCategoryName(element.CategoryID) }}
                   </td>
                 </ng-container>
 
                 <!-- Symbol Column -->
-                <ng-container matColumnDef="harvestDate">
+                <ng-container matColumnDef="Harvest_Month">
                   <th mat-header-cell *matHeaderCellDef mat-sort-header>
                     Harvest date
                   </th>
                   <td mat-cell *matCellDef="let element">
-                    {{ element.harvestDate }}
+                    {{ element.Harvest_Month }}
+                  </td>
+                </ng-container>
+
+                <ng-container matColumnDef="Actions">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                  <td mat-cell *matCellDef="let element">
+                    <i
+                      class="material-icons clickable"
+                      (click)="editProduct(element.ProductID)"
+                      >create</i
+                    >
+                    <i
+                      class="material-icons clickable"
+                      (click)="deleteProduct(element.ProductID)"
+                      >delete</i
+                    >
                   </td>
                 </ng-container>
 
@@ -115,7 +134,7 @@
               class="form-control"
               id="name"
               placeholder="Name of product"
-              formControlName="name"
+              formControlName="ProductName"
             />
           </div>
           <div class="form-group">
@@ -124,8 +143,25 @@
               class="form-control"
               id="description"
               rows="3"
-              formControlName="description"
+              formControlName="ProductDescriptions"
             ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Category</label>
+            <select
+              class="form-control"
+              id="exampleFormControlSelect1"
+              formControlName="CategoryID"
+            >
+              <option
+                *ngFor="let category of categories"
+                [ngValue]="category.CategoryID"
+                [selected]="
+                  categories.CategoryID === formGroup.value.CategoryID
+                "
+                >{{ category.CategoryName }}</option
+              >
+            </select>
           </div>
           <div class="form-group">
             <label for="quantity">Quantity</label>
@@ -133,25 +169,37 @@
               type="number"
               class="form-control"
               id="quantity"
-              formControlName="quantity"
+              formControlName="Quantity"
             />
           </div>
           <div class="form-group">
-            <label for="harvestDate">Harvest date</label>
-            <input
-              type="date"
+            <label for="harvest">Harvest Month</label>
+            <select
               class="form-control"
-              id="harvestDate"
-              formControlName="harvestDate"
-            />
+              id="harvest"
+              formControlName="Harvest_Month"
+            >
+              <option
+                *ngFor="let month of monthList"
+                [ngValue]="month"
+                [selected]="month === formGroup.value.Harvest_Month"
+                >{{ month }}</option
+              >
+            </select>
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-dismiss="modal"
+            id="modal-close"
+          >
             Close
           </button>
           <button type="submit" class="btn btn-primary">Save changes</button>
         </div>
+        <mat-spinner *ngIf="isLoading" class="waiter"></mat-spinner>
       </form>
     </div>
   </div>

@@ -1,12 +1,8 @@
 <div class="container">
   <app-navbar title="User Profile"></app-navbar>
   <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
-  <div
-    class="row"
-    style="margin-top: 30px"
-    *ngIf="!isLoading && userProfile !== undefined"
-  >
-    <div class="col-md-8">
+  <div class="row" style="margin-top: 30px">
+    <div class="col-md-12">
       <div class="card">
         <div class="card-header">
           <i class="material-icons">perm_identity</i>
@@ -21,7 +17,7 @@
             [formGroup]="profileForm"
             (ngSubmit)="updateProfile(profileForm.value)"
           >
-            <mat-tab-group>
+            <mat-tab-group *ngIf="!isLoading && userProfile !== undefined">
               <mat-tab label="Account">
                 <div class="row">
                   <div class="col-md-12">

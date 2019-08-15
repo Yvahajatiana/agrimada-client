@@ -16,7 +16,8 @@ import {
   MatTabsModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSortModule
+  MatSortModule,
+  MatProgressSpinnerModule
 } from '@angular/material';
 
 const modules = [
@@ -34,7 +35,8 @@ const modules = [
   MatTabsModule,
   MatTableModule,
   MatPaginatorModule,
-  MatSortModule
+  MatSortModule,
+  MatProgressSpinnerModule
 ];
 
 @NgModule({

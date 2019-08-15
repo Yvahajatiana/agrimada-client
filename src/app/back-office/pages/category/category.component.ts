@@ -65,7 +65,7 @@ export class CategoryComponent implements OnInit {
   }
 
   onSave(category) {
-    console.log(category);
+    console.log(this.selected);
     const formData = new FormData();
     formData.append('CategoryName', category.categoryName);
     formData.append('Descriptions', category.descriptions);
