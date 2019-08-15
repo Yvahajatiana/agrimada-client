@@ -1,0 +1,22 @@
+<p>
+  menu works!
+</p>
+<button (click)="initForm()" mat-raised-button mat-icon-button color="primary" *ngIf="menu == null">
+  <mat-icon>add</mat-icon>
+</button>
+<app-menu-form *ngIf="menu"
+  [(value)]="menu"
+  (valueChange)="submited($event)"
+  [errors]="errors"
+></app-menu-form>
+<ul>
+  <li *ngFor="let menu of menus | async">
+    {{ menu.Name + ' (' + menu.Url + ')' }}
+    <i class="material-icons clickable"
+      (click)="editMenu(menu)"
+      >create</i>
+    <i class="material-icons clickable"
+      (click)="deleteMenu(menu)"
+      >delete</i>
+  </li>
+</ul>
