@@ -1,7 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DictionaryService } from '../../services/dictionary.service';
 import { Dictionary } from '../../models/dictionary';
 import { Observable, Subscription } from 'rxjs';
+import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-dictionary',
@@ -14,6 +15,9 @@ export class DictionaryComponent implements OnInit, OnDestroy {
   public subscriptions: Subscription[] = [];
   public dictionary: Dictionary;
   public errors: any[];
+  public displayedColumns: string[] = ['DictionaryKey', 'DictionaryValue', 'Actions'];
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
 
   constructor(private dictionarySvc: DictionaryService) { }
 
@@ -38,11 +42,13 @@ export class DictionaryComponent implements OnInit, OnDestroy {
       this.subscriptions.push(this.dictionarySvc.add(dictionary).subscribe((response) => {
         this.dictionary = null;
         this.refresh();
+        this.closeForm();
       }, (error) => this.errors = error));
     } else {
       this.subscriptions.push(this.dictionarySvc.update(dictionary).subscribe((response) => {
         this.dictionary = null;
         this.refresh();
+        this.closeForm();
       }, (error) => this.errors = error));
     }
   }
@@ -57,6 +63,17 @@ export class DictionaryComponent implements OnInit, OnDestroy {
 
   editDictionary(dictionary: Dictionary) {
     this.dictionary = dictionary;
+    document.getElementById('edit-btn').click();
+  }
+
+  openForm(): void {
+    this.dictionary = {};
+    document.getElementById('edit-btn').click();
+  }
+
+  closeForm(): void {
+    this.dictionary = null;
+    document.getElementById('modal-close').click();
   }
 
 }
