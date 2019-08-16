@@ -1,22 +1,48 @@
-<p>
-  menu works!
-</p>
-<button (click)="initForm()" mat-raised-button mat-icon-button color="primary" *ngIf="menu == null">
+<div class="container">
+  <app-navbar title="Settings"></app-navbar>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header" (click)="initForm()">
+          <i class="material-icons">assignment</i>
+        </div>
+        <div class="card-content">
+          <h4 class="card-title">Menus</h4>
+          <div class="table-responsive">
+            <div class="mat-elevation-z8">
+              <app-menu-form
+                *ngIf="menu"
+                [(value)]="menu"
+                (valueChange)="submited($event)"
+                [errors]="errors"
+              ></app-menu-form>
+              <ul>
+                <li *ngFor="let menu of menus | async">
+                  {{ menu.Name + ' (' + menu.Url + ')' }}
+                  <i class="material-icons clickable" (click)="editMenu(menu)"
+                    >create</i
+                  >
+                  <i class="material-icons clickable" (click)="deleteMenu(menu)"
+                    >delete</i
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
+<button
+  (click)="initForm()"
+  mat-raised-button
+  mat-icon-button
+  color="primary"
+  *ngIf="menu == null"
+>
   <mat-icon>add</mat-icon>
 </button>
-<app-menu-form *ngIf="menu"
-  [(value)]="menu"
-  (valueChange)="submited($event)"
-  [errors]="errors"
-></app-menu-form>
-<ul>
-  <li *ngFor="let menu of menus | async">
-    {{ menu.Name + ' (' + menu.Url + ')' }}
-    <i class="material-icons clickable"
-      (click)="editMenu(menu)"
-      >create</i>
-    <i class="material-icons clickable"
-      (click)="deleteMenu(menu)"
-      >delete</i>
-  </li>
-</ul>
+-->
