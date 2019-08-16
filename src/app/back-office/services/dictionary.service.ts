@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 import { handleError } from 'src/app/shared/assets';
 import { Dictionary } from '../models/dictionary';
+import { DictionaryFile } from '../models/dictionary-file';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,14 @@ export class DictionaryService {
 
   delete(dictionaryID: number) {
     return this.http.delete<Dictionary>(this.apiPrefix + '/' + dictionaryID, {
+      headers: this.headers,
+    }).pipe(catchError(handleError));
+  }
+
+  addExcel(dictionary: DictionaryFile) {
+    const formData = new FormData();
+    formData.append('dictionary_file', dictionary.DictionaryFile);
+    return this.http.post(this.apiPrefix + '/file', formData, {
       headers: this.headers,
     }).pipe(catchError(handleError));
   }

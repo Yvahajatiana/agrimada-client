@@ -3,6 +3,7 @@ import { DictionaryService } from '../../services/dictionary.service';
 import { Dictionary } from '../../models/dictionary';
 import { Observable, Subscription } from 'rxjs';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+import { DictionaryFile } from '../../models/dictionary-file';
 
 @Component({
   selector: 'app-dictionary',
@@ -37,15 +38,25 @@ export class DictionaryComponent implements OnInit, OnDestroy {
     this.dictionary = {};
   }
 
-  submited(dictionary: Dictionary) {
-    if (!dictionary.DictionaryID) {
-      this.subscriptions.push(this.dictionarySvc.add(dictionary).subscribe((response) => {
-        this.dictionary = null;
-        this.refresh();
-        this.closeForm();
-      }, (error) => this.errors = error));
-    } else {
-      this.subscriptions.push(this.dictionarySvc.update(dictionary).subscribe((response) => {
+  // submited(dictionary: Dictionary) {
+  //   if (!dictionary.DictionaryID) {
+  //     this.subscriptions.push(this.dictionarySvc.add(dictionary).subscribe((response) => {
+  //       this.dictionary = null;
+  //       this.refresh();
+  //       this.closeForm();
+  //     }, (error) => this.errors = error));
+  //   } else {
+  //     this.subscriptions.push(this.dictionarySvc.update(dictionary).subscribe((response) => {
+  //       this.dictionary = null;
+  //       this.refresh();
+  //       this.closeForm();
+  //     }, (error) => this.errors = error));
+  //   }
+  // }
+
+  submited(dictionary: DictionaryFile) {
+    if (dictionary.DictionaryFile) {
+      this.subscriptions.push(this.dictionarySvc.addExcel(dictionary).subscribe((response) => {
         this.dictionary = null;
         this.refresh();
         this.closeForm();

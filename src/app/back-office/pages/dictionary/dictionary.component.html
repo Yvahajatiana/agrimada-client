@@ -82,12 +82,18 @@
 >
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <app-dictionary-form
+      <!-- <app-dictionary-form
         *ngIf="dictionary"
         [(value)]="dictionary"
         (valueChange)="submited($event)"
         [errors]="errors"
-      ></app-dictionary-form>
+      ></app-dictionary-form> -->
+      <app-dictionary-file-form
+        *ngIf="dictionary"
+        [(value)]="dictionary"
+        (valueChange)="submited($event)"
+        [errors]="errors"
+      ></app-dictionary-file-form>
     </div>
   </div>
 </div>
