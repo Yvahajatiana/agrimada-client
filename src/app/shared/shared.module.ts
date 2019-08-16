@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '../material/material.module';
@@ -15,6 +15,8 @@ import { SettingsService } from './services/settings.service';
 import { JwtModule } from '@auth0/angular-jwt';
 import { DialogboxComponent } from './components/dialogbox/dialogbox.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { LaravelInterceptor } from './interceptors/laravel.interceptor';
+import { TokenInterceptor } from './interceptors/token.interceptor';
 
 export function tokenGetter() {
   return localStorage.getItem('access_token');
@@ -49,6 +51,10 @@ const modules = [
     SidebarComponent
   ],
   entryComponents: [DialogboxComponent],
-  providers: [SettingsService]
+  providers: [
+    SettingsService,
+    { provide: HTTP_INTERCEPTORS, useClass: LaravelInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }
+  ]
 })
 export class SharedModule {}

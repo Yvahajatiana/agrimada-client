@@ -1,17 +1,34 @@
 <div class="nav-bar">
   <div class="left-part">
-    <button mat-mini-fab id="nav-left-button"><i class="material-icons" style="font-size:18px;">more_vert</i></button>
+    <button mat-mini-fab id="nav-left-button">
+      <i class="material-icons" style="font-size:18px;">more_vert</i>
+    </button>
     <h4>{{ title }}</h4>
   </div>
   <div class="right-part">
     <div class="right-part" id="nav-right">
       <mat-form-field color="#ff0000">
-        <input matInput type="search" placeholder="Search">
+        <input matInput type="search" placeholder="Search" />
       </mat-form-field>
-      <button mat-mini-fab class="search-btn"><i class="material-icons" style="font-size:18px;">search</i></button>
-      <button mat-icon-button><i class="material-icons icon-btn">dashboard</i></button>
-      <app-msgiconbtn icon="notifications" number="5" [matMenuTriggerFor]="menu"></app-msgiconbtn>
-      <button mat-icon-button><i class="material-icons icon-btn">person</i></button>
+      <button mat-mini-fab class="search-btn">
+        <i class="material-icons" style="font-size:18px;">search</i>
+      </button>
+      <button mat-icon-button>
+        <i class="material-icons icon-btn">dashboard</i>
+      </button>
+      <app-msgiconbtn
+        icon="notifications"
+        number="5"
+        [matMenuTriggerFor]="menu"
+      ></app-msgiconbtn>
+      <button mat-icon-button [matMenuTriggerFor]="personMenu">
+        <i class="material-icons icon-btn">person</i>
+      </button>
+      <mat-menu #personMenu="matMenu">
+        <button mat-menu-item>Profile</button>
+        <button mat-menu-item (click)="logout()" >Logout</button>
+      </mat-menu>
+
       <mat-menu #menu="matMenu">
         <button mat-menu-item>Mike John responded to your email</button>
         <button mat-menu-item>You have 5 new tasks</button>
@@ -21,7 +38,9 @@
       </mat-menu>
     </div>
     <div id="menu">
-      <button mat-icon-button (click)="menuClick()"><i class="material-icons">menu</i></button>
+      <button mat-icon-button (click)="menuClick()">
+        <i class="material-icons">menu</i>
+      </button>
     </div>
   </div>
 </div>
