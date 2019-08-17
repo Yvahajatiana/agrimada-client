@@ -4,11 +4,13 @@ import { PageNotFoundComponent } from './shared/pages/page-not-found/page-not-fo
 import { LoginComponent } from './shared/pages/login/login.component';
 import { RegisterComponent } from './shared/pages/register/register.component';
 import { RegisterloginGuardService } from './shared/services/registerlogin-guard.service';
+import { AuthGuardService } from './shared/services/auth-guard.service';
 
 const AppRoutes: Routes = [
   {
     path: 'bo/dashboard',
-    loadChildren: './back-office/back-office.module#BackOfficeModule'
+    loadChildren: './back-office/back-office.module#BackOfficeModule',
+    canActivate: [AuthGuardService]
   },
   {
     path: 'bo/signin',

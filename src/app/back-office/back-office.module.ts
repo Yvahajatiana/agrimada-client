@@ -16,6 +16,7 @@ import { DictionaryFormComponent } from './components/dictionary-form/dictionary
 import { MenuComponent } from './pages/menu/menu.component';
 import { MenuFormComponent } from './components/menu-form/menu-form.component';
 import { DictionaryFileFormComponent } from './components/dictionary-file-form/dictionary-file-form.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { DictionaryFileFormComponent } from './components/dictionary-file-form/d
     DictionaryFormComponent,
     MenuComponent,
     MenuFormComponent,
-    DictionaryFileFormComponent
+    DictionaryFileFormComponent,
+    DashboardComponent
   ],
   imports: [
     FormsModule,

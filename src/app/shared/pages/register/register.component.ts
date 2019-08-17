@@ -42,9 +42,9 @@ export class RegisterComponent implements OnInit {
     this.isSubmited = true;
     registerFormValue.password_confirmation = registerFormValue.password;
     if (this.registerForm.value.optinSupplier) {
-      registerFormValue.role = 'sup';
+      registerFormValue.role = 'supplier';
     } else {
-      registerFormValue.role = 'cus';
+      registerFormValue.role = 'customer';
     }
     const toPost: RegisterModel = {
       name: registerFormValue.name,

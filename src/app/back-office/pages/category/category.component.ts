@@ -17,6 +17,7 @@ export class CategoryComponent implements OnInit {
     Authorization: `Bearer ${localStorage.getItem('access_token')}`
   };
   categories: MatTableDataSource<any>;
+  parents: any[];
   formGroup: FormGroup;
   selected: any;
   addUpdateErrors: any;
@@ -24,12 +25,18 @@ export class CategoryComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  displayedColumns: string[] = ['CategoryName', 'Descriptions', 'Actions'];
+  displayedColumns: string[] = [
+    'CategoryName',
+    'Descriptions',
+    'Slug',
+    'Actions'
+  ];
 
   constructor(private fb: FormBuilder, private httpClient: HttpClient) {
     this.formGroup = this.fb.group({
       categoryName: ['', Validators.required],
       descriptions: ['', Validators.required],
+      parent: [''],
       picture: ['']
     });
   }
@@ -44,6 +51,7 @@ export class CategoryComponent implements OnInit {
     this.formGroup.setValue({
       categoryName: '',
       descriptions: '',
+      parent: '',
       picture: ''
     });
     document.getElementById('edit-btn').click();
@@ -69,6 +77,7 @@ export class CategoryComponent implements OnInit {
     const formData = new FormData();
     formData.append('CategoryName', category.categoryName);
     formData.append('Descriptions', category.descriptions);
+    formData.append('ParentID', category.parent);
     if (category.picture instanceof File) {
       formData.append('Picture', category.picture);
     }
@@ -99,6 +108,7 @@ export class CategoryComponent implements OnInit {
       .get<any[]>('/api/bo/categories', { headers: this.headers })
       .subscribe(response => {
         this.categories = new MatTableDataSource<Category>(response);
+        this.parents = this.categories.data.filter(x => x.ParentID === null);
         console.log(this.categories);
         this.isLoading = false;
         this.categories.paginator = this.paginator;
@@ -120,7 +130,8 @@ export class CategoryComponent implements OnInit {
     this.formGroup.setValue({
       categoryName: this.selected.CategoryName,
       descriptions: this.selected.Descriptions,
-      picture: this.selected.Picture
+      picture: this.selected.Picture,
+      parent: this.selected.ParentID === undefined ? '' : this.selected.ParentID
     });
     document.getElementById('edit-btn').click();
   }

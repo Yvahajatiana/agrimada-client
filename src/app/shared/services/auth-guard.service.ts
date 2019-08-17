@@ -9,10 +9,11 @@ export class AuthGuardService {
   constructor(public auth: AuthService, public router: Router) {}
 
   canActivate() {
-    if (this.auth.isLogged() === undefined) {
-      this.router.parseUrl('bo/signin');
+    if (this.auth.isLogged()) {
+      return true;
     }
 
-    return true;
+    this.router.navigate(['bo/signin']);
+    return false;
   }
 }
