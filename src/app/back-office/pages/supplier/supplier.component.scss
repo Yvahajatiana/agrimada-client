@@ -1,8 +1,12 @@
-.row{
+table {
+  width: 100%;
+}
+
+.row {
   margin-top: 10px;
 }
 
-.card{
+.card {
   display: flex;
   flex-direction: column;
   padding: 20px;
@@ -14,7 +18,8 @@
   position: absolute;
   text-align: center;
   background: linear-gradient(60deg, #ec407a, #d81b60);
-  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(233, 30, 99, 0.4);
+  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14),
+    0 7px 10px -5px rgba(233, 30, 99, 0.4);
   /*margin: -20px 15px 0;*/
   border-radius: 3px;
   padding: 15px;
@@ -30,18 +35,14 @@
   cursor: pointer;
 }
 
-.card-content{
+.card-content {
   position: relative;
 }
 
-.card-title{
+.card-title {
   padding-left: 80px;
 }
 
 .clickable {
   cursor: pointer;
-}
-
-table {
-  width: 100%;
 }

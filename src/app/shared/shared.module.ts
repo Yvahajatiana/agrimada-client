@@ -17,10 +17,8 @@ import { DialogboxComponent } from './components/dialogbox/dialogbox.component';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { LaravelInterceptor } from './interceptors/laravel.interceptor';
 import { TokenInterceptor } from './interceptors/token.interceptor';
-
-export function tokenGetter() {
-  return localStorage.getItem('access_token');
-}
+import { FigurecardComponent } from './components/figurecard/figurecard.component';
+import { AuthService } from './services/auth.service';
 
 const modules = [
   HttpClientModule,
@@ -39,7 +37,8 @@ const modules = [
     MsgIconBtnComponent,
     NavbarComponent,
     SidebarComponent,
-    DialogboxComponent
+    DialogboxComponent,
+    FigurecardComponent
   ],
   imports: [CommonModule, ...modules],
   exports: [
@@ -48,10 +47,12 @@ const modules = [
     HeaderComponent,
     MsgIconBtnComponent,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    FigurecardComponent
   ],
   entryComponents: [DialogboxComponent],
   providers: [
+    AuthService,
     SettingsService,
     { provide: HTTP_INTERCEPTORS, useClass: LaravelInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }

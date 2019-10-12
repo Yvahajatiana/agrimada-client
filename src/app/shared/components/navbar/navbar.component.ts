@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -10,11 +11,11 @@ import { Subscription } from 'rxjs';
 export class NavbarComponent implements OnInit, OnDestroy {
   @Input() title: string;
   private subscriptions: Subscription[] = [];
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   ngOnInit() {}
   ngOnDestroy() {
-    this.subscriptions.map((item) => item.unsubscribe());
+    this.subscriptions.map(item => item.unsubscribe());
   }
 
   menuClick() {
@@ -22,10 +23,13 @@ export class NavbarComponent implements OnInit, OnDestroy {
   }
 
   logout() {
+    /*
     this.subscriptions.push(this.http.delete('/api/oauth/logout', {
       headers: {
         Authorization: 'AUTO'
       }
     }).subscribe((response) => response));
+    */
+    this.authService.logout();
   }
 }

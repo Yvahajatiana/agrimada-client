@@ -3,7 +3,10 @@ import { MatPaginator, MatTableDataSource, MatSort } from '@angular/material';
 import { Product } from './product.model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { Category } from '../../models/category';
+import { ProductService } from './product.service';
+import { takeUntil } from 'rxjs/operators';
+import { CategoryService } from '../category/category.service';
+import { Category } from '../category/category.model';
 
 @Component({
   selector: 'app-product',
@@ -11,9 +14,6 @@ import { Category } from '../../models/category';
   styleUrls: ['./product.component.scss']
 })
 export class ProductComponent implements OnInit {
-  private headers = {
-    Authorization: `Bearer ${localStorage.getItem('access_token')}`
-  };
   formGroup: FormGroup;
   displayedColumns: string[] = [
     'ProductName',
@@ -23,7 +23,7 @@ export class ProductComponent implements OnInit {
     'Harvest_Month',
     'Actions'
   ];
-  dataSource: MatTableDataSource<Product>;
+  products: MatTableDataSource<Product>;
   isLoading = false;
   selected: Product;
   categories: Category[];
@@ -44,13 +44,18 @@ export class ProductComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private fb: FormBuilder, private httpClient: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private productService: ProductService,
+    private categoryService: CategoryService
+  ) {
     this.formGroup = this.fb.group({
       ProductName: ['', Validators.required],
       ProductDescriptions: ['', Validators.required],
       Quantity: ['', Validators.required],
       CategoryID: ['-100', Validators.required],
-      Harvest_Month: ['', Validators.required]
+      Harvest_Month: ['', Validators.required],
+      Pictures: ['']
     });
   }
 
@@ -66,13 +71,14 @@ export class ProductComponent implements OnInit {
       ProductDescriptions: '',
       Quantity: '',
       CategoryID: '',
-      Harvest_Month: ''
+      Harvest_Month: '',
+      Pictures: ''
     });
     document.getElementById('edit-btn').click();
   }
 
   editProduct(id) {
-    this.selected = this.dataSource.data.find(x => x.ProductID === id);
+    this.selected = this.products.data.find(x => x.ProductID === id);
     this.formGroup.setValue({
       ProductName:
         this.selected.ProductName !== undefined
@@ -89,81 +95,66 @@ export class ProductComponent implements OnInit {
       Harvest_Month:
         this.selected.Harvest_Month !== undefined
           ? this.selected.Harvest_Month
-          : ''
+          : '',
+      Pictures: ''
     });
-    console.log(this.formGroup.value);
     document.getElementById('edit-btn').click();
   }
 
   getCategoryName(id) {
     const selectedCategory = this.categories.find(x => x.CategoryID === id);
-    //console.log(selectedCategory);
     return selectedCategory.CategoryName;
+  }
+
+  getParentCategoryName(id) {
+    const selectedCategory = this.categories.find(x => x.CategoryID === id);
+    if (selectedCategory === undefined) {
+      return '';
+    }
+    const parent = this.categories.find(
+      x => x.ParentID === selectedCategory.ParentID
+    );
+    return parent.CategoryName;
   }
   initCategories() {
     this.startLoading();
-    this.httpClient
-      .get<Category[]>('/api/bo/categories', { headers: this.headers })
-      .subscribe(response => {
-        this.categories = response;
-        console.log(this.categories);
-        this.endLoading();
-      });
+    this.categoryService.getCategories().subscribe(response => {
+      this.categories = response;
+      this.endLoading();
+    });
   }
 
-  deleteProduct(id) {}
+  deleteProduct(id) {
+    this.productService.deleteProduct(id).subscribe(response => {
+      this.refreshProducts();
+    });
+  }
 
-  onSave(newProduct: Product) {
-    console.log(newProduct);
-    const formData = new FormData();
-    formData.append('ProductName', newProduct.ProductName);
-    formData.append('ProductDescriptions', newProduct.ProductDescriptions);
-    formData.append('Quantity', String(newProduct.Quantity));
-    formData.append('CategoryID', newProduct.CategoryID);
-    formData.append('Harvest_Month', newProduct.Harvest_Month);
-
+  onSave(product: Product) {
     if (this.selected === undefined) {
-      console.log(this.selected);
-      console.log('create');
-      this.onCreate(formData);
+      this.productService.createProduct(product).subscribe(response => {
+        this.closeFormAndRefresh();
+        this.endLoading();
+      });
     } else {
-      console.log('edit');
-      formData.append('ProductID', String(this.selected.ProductID));
-      formData.append('_method', 'put');
-      this.onUpdate(formData, this.selected.ProductID);
+      this.productService
+        .updateProduct(product, this.selected.ProductID)
+        .subscribe(response => {
+          this.closeFormAndRefresh();
+          this.endLoading();
+        });
     }
-  }
-  onCreate(product: any) {
-    this.startLoading();
-    this.httpClient
-      .post('/api/bo/products', product, { headers: this.headers })
-      .subscribe(response => {
-        this.closeFormAndRefresh();
-        this.endLoading();
-      });
-  }
-
-  onUpdate(product: any, id: number) {
-    this.startLoading();
-    this.httpClient
-      .post(`/api/bo/products/${id}`, product, { headers: this.headers })
-      .subscribe(response => {
-        this.closeFormAndRefresh();
-        this.endLoading();
-      });
   }
 
   refreshProducts() {
     this.startLoading();
-    this.httpClient
-      .get<Product[]>('/api/bo/products/my', { headers: this.headers })
-      .subscribe(response => {
-        this.dataSource = new MatTableDataSource<Product>(response);
-        this.dataSource.paginator = this.paginator;
-        this.isLoading = false;
-        this.endLoading();
-      });
+    this.productService.getProducts().subscribe(response => {
+      this.products = new MatTableDataSource<Product>(response);
+      this.products.paginator = this.paginator;
+      this.endLoading();
+    });
   }
+
   closeFormAndRefresh() {
     this.refreshProducts();
     this.closeForm();
@@ -178,5 +169,9 @@ export class ProductComponent implements OnInit {
 
   endLoading() {
     this.isLoading = false;
+  }
+
+  applyFilter(filterValue: string) {
+    this.products.filter = filterValue.trim().toLowerCase();
   }
 }

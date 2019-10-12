@@ -7,6 +7,7 @@
   </div>
   <div class="right-part">
     <div class="right-part" id="nav-right">
+      <!--
       <mat-form-field color="#ff0000">
         <input matInput type="search" placeholder="Search" />
       </mat-form-field>
@@ -16,6 +17,7 @@
       <button mat-icon-button>
         <i class="material-icons icon-btn">dashboard</i>
       </button>
+      -->
       <app-msgiconbtn
         icon="notifications"
         number="5"
@@ -26,7 +28,7 @@
       </button>
       <mat-menu #personMenu="matMenu">
         <button mat-menu-item>Profile</button>
-        <button mat-menu-item (click)="logout()" >Logout</button>
+        <button mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
 
       <mat-menu #menu="matMenu">

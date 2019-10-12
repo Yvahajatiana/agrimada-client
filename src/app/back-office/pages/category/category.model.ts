@@ -1,6 +1,9 @@
 export interface Category {
-  id: number;
-  title: string;
-  description: string;
-  supplierCount: number;
+  CategoryID: number;
+  ParentID: number;
+  SupplierID: number;
+  CategoryName: string;
+  Descriptions: string;
+  Slug: string;
+  Picture: string | File;
 }

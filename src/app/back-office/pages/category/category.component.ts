@@ -1,11 +1,9 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
-import { CreateCategoryComponent } from './create.category.component';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Category } from './category.model';
 import { CategoryService } from './category.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-category',
@@ -13,15 +11,14 @@ import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
   styleUrls: ['./category.component.css']
 })
 export class CategoryComponent implements OnInit {
-  private headers = {
-    Authorization: `Bearer ${localStorage.getItem('access_token')}`
-  };
   categories: MatTableDataSource<any>;
   parents: any[];
   formGroup: FormGroup;
   selected: any;
   addUpdateErrors: any;
   isLoading = false;
+  lastFile: File;
+  isSubCategory = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -32,27 +29,32 @@ export class CategoryComponent implements OnInit {
     'Actions'
   ];
 
-  constructor(private fb: FormBuilder, private httpClient: HttpClient) {
+  constructor(
+    private fb: FormBuilder,
+    private categoryService: CategoryService,
+    private router: Router
+  ) {
     this.formGroup = this.fb.group({
-      categoryName: ['', Validators.required],
-      descriptions: ['', Validators.required],
-      parent: [''],
-      picture: ['']
+      CategoryName: ['', Validators.required],
+      Descriptions: ['', Validators.required],
+      ParentID: [''],
+      Picture: ['']
     });
+    console.log(this.router.url);
+    this.isSubCategory = this.router.url.includes('/bo/dashboard/products');
   }
 
   ngOnInit() {
-    // this.categories = this.initCategories();
     this.refreshCategories();
   }
 
   openForm(): void {
     this.selected = undefined;
     this.formGroup.setValue({
-      categoryName: '',
-      descriptions: '',
-      parent: '',
-      picture: ''
+      CategoryName: '',
+      Descriptions: '',
+      ParentID: '',
+      Picture: ''
     });
     document.getElementById('edit-btn').click();
   }
@@ -61,88 +63,83 @@ export class CategoryComponent implements OnInit {
     document.getElementById('modal-close').click();
   }
 
-  openEditForm(selectedCategory: Category): void {}
-
-  onDelete(selectedCategory: Category): void {}
-
   onFileSelect(event) {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.formGroup.get('picture').setValue(file);
+      console.log(file);
+      this.formGroup.get('Picture').setValue(file);
+      this.lastFile = file;
     }
   }
 
-  onSave(category) {
-    console.log(this.selected);
-    const formData = new FormData();
-    formData.append('CategoryName', category.categoryName);
-    formData.append('Descriptions', category.descriptions);
-    formData.append('ParentID', category.parent);
-    if (category.picture instanceof File) {
-      formData.append('Picture', category.picture);
-    }
-
-    if (this.selected !== undefined) {
-      formData.append('CategoryID', this.selected.CategoryID);
-      formData.append('_method', 'put');
-      this.onUpdate(formData, this.selected.CategoryID);
-    } else {
-      this.onCreate(formData);
-    }
-  }
-
-  onCreate(category) {
-    this.httpClient
-      .post<Category>('/api/bo/categories', category, {
-        headers: this.headers
-      })
-      .subscribe(response => {
-        this.refreshCategories();
-        this.closeForm();
+  onSave(category: Category) {
+    this.startLoading();
+    if (this.selected === undefined) {
+      this.categoryService.createCategory(category).subscribe(response => {
+        this.afterSaveUpdate();
+        this.stopLoading();
       });
+    } else {
+      this.categoryService
+        .updateCategory(category, this.selected.CategoryID)
+        .subscribe(response => {
+          this.afterSaveUpdate();
+          this.stopLoading();
+        });
+    }
+  }
+
+  afterSaveUpdate() {
+    this.refreshCategories();
+    this.closeForm();
   }
 
   refreshCategories() {
-    this.isLoading = true;
-    this.httpClient
-      .get<any[]>('/api/bo/categories', { headers: this.headers })
-      .subscribe(response => {
-        this.categories = new MatTableDataSource<Category>(response);
-        this.parents = this.categories.data.filter(x => x.ParentID === null);
-        console.log(this.categories);
-        this.isLoading = false;
-        this.categories.paginator = this.paginator;
-      });
+    this.startLoading();
+    this.categoryService.getCategories().subscribe(response => {
+      this.initTable(response);
+      this.stopLoading();
+    });
+  }
+
+  initTable(data: Category[]) {
+    const filtredData = this.isSubCategory
+      ? data.filter(x => x.ParentID !== null)
+      : data.filter(x => x.ParentID === null);
+    this.categories = new MatTableDataSource<Category>(filtredData);
+    this.parents = this.categories.data.filter(x => x.ParentID === null);
+    this.categories.paginator = this.paginator;
   }
 
   deleteCategory(id: number) {
-    this.httpClient
-      .delete(`/api/bo/categories/${id}`, { headers: this.headers })
-      .subscribe(response => {
-        console.log(response);
-        this.refreshCategories();
-      });
+    this.startLoading();
+    this.categoryService.deleteCategory(id).subscribe(response => {
+      this.refreshCategories();
+      this.stopLoading();
+    });
   }
 
   editCategory(id: number) {
     this.selected = this.categories.data.find(x => x.CategoryID === id);
-    console.log(this.selected);
     this.formGroup.setValue({
-      categoryName: this.selected.CategoryName,
-      descriptions: this.selected.Descriptions,
-      picture: this.selected.Picture,
-      parent: this.selected.ParentID === undefined ? '' : this.selected.ParentID
+      CategoryName: this.selected.CategoryName,
+      Descriptions: this.selected.Descriptions,
+      Picture: this.selected.Picture,
+      ParentID:
+        this.selected.ParentID === undefined ? '' : this.selected.ParentID
     });
     document.getElementById('edit-btn').click();
   }
 
-  onUpdate(category, id) {
-    this.httpClient
-      .post(`/api/bo/categories/${id}`, category, { headers: this.headers })
-      .subscribe(response => {
-        console.log(response);
-        this.refreshCategories();
-        this.closeForm();
-      });
+  startLoading() {
+    this.isLoading = true;
+  }
+
+  stopLoading() {
+    this.isLoading = false;
+  }
+
+  applyFilter(filterValue: string) {
+    this.categories.filter = filterValue.trim().toLowerCase();
   }
 }

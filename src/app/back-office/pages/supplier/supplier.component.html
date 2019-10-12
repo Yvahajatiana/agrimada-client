@@ -1,0 +1,96 @@
+<div class="container">
+  <app-navbar title="Product"></app-navbar>
+  <mat-progress-bar mode="indeterminate" *ngIf="isLoading"></mat-progress-bar>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="material-icons">assignment</i>
+        </div>
+        <div class="card-content">
+          <h4 class="card-title">Actived Suppliers</h4>
+          <div class="table-responsive">
+            <div class="mat-elevation-z8">
+              <mat-form-field class="full-width">
+                <input
+                  matInput
+                  (keyup)="applyFilter($event.target.value)"
+                  placeholder="Search"
+                />
+              </mat-form-field>
+              <table mat-table [dataSource]="suppliers" matSort>
+                <!-- Position Column -->
+                <ng-container matColumnDef="company_name">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Company Name
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.company_name }}
+                  </td>
+                </ng-container>
+
+                <!-- Name Column -->
+                <ng-container matColumnDef="company_descriptions">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Descriptions
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.company_descriptions | slice: 0:100 }}
+                  </td>
+                </ng-container>
+
+                <!-- Weight Column -->
+                <ng-container matColumnDef="email">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Email
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.email }}
+                  </td>
+                </ng-container>
+
+                <!-- Symbol Column -->
+                <ng-container matColumnDef="phone">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                    Telephone
+                  </th>
+                  <td mat-cell *matCellDef="let element">
+                    {{ element.phone }}
+                  </td>
+                </ng-container>
+
+                <!--
+                <ng-container matColumnDef="Actions">
+                  <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
+                  <td mat-cell *matCellDef="let element">
+                    <i
+                      class="material-icons clickable"
+                      (click)="editProduct(element.ProductID)"
+                      >create</i
+                    >
+                    <i
+                      class="material-icons clickable"
+                      (click)="deleteProduct(element.ProductID)"
+                      >delete</i
+                    >
+                  </td>
+                </ng-container>
+                -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                <tr
+                  mat-row
+                  *matRowDef="let row; columns: displayedColumns"
+                ></tr>
+              </table>
+
+              <mat-paginator
+                [pageSizeOptions]="[5, 10, 20]"
+                showFirstLastButtons
+              ></mat-paginator>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

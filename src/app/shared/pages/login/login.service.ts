@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { PassportCredential, LoginCredential } from '../../Models/auth.model';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class LoginService {
     });
   }
 
-  login(credential: Credential): Observable<PassportCredential> {
+  login(credential: LoginCredential): Observable<PassportCredential> {
     credential = { ...credential, ...this.credential };
     credential.grant_type = 'password';
     return this.httpClient.post<PassportCredential>(
@@ -28,7 +29,7 @@ export class LoginService {
     if (this.credential) {
       return of(this.credential);
     } else if (!this.credential && !environment.production) {
-      return this.httpClient.get<Credential>('/config/tokens');
+      return this.httpClient.get<LoginCredential>('/config/tokens');
     } else {
       const element = document.querySelector('html');
       const credential = {
@@ -38,19 +39,4 @@ export class LoginService {
       return of(credential);
     }
   }
-}
-
-export interface Credential {
-  username: string;
-  password: string;
-  client_secret: string;
-  client_id: string;
-  grant_type: string;
-}
-
-export interface PassportCredential {
-  token_type: string;
-  expires_in: string;
-  refresh_token: string;
-  access_token: string;
 }

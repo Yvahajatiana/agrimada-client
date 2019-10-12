@@ -1,4 +1,5 @@
 export interface Profile {
+  role: string;
   user_id: number;
   supplier_id: number;
   email: string;

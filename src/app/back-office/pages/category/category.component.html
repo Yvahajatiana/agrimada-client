@@ -8,9 +8,17 @@
           <i class="material-icons">assignment</i>
         </div>
         <div class="card-content">
-          <h4 class="card-title">All categories</h4>
+          <h4 *ngIf="!isSubCategory" class="card-title">All categories</h4>
+          <h4 *ngIf="isSubCategory" class="card-title">All Products</h4>
           <div class="table-responsive">
             <div class="mat-elevation-z8">
+              <mat-form-field class="full-width">
+                <input
+                  matInput
+                  (keyup)="applyFilter($event.target.value)"
+                  placeholder="Search"
+                />
+              </mat-form-field>
               <table mat-table [dataSource]="categories" matSort>
                 <!-- Position Column -->
                 <ng-container matColumnDef="CategoryName">
@@ -112,7 +120,7 @@
               class="form-control"
               id="categoryName"
               placeholder="Name of category"
-              formControlName="categoryName"
+              formControlName="CategoryName"
             />
           </div>
           <div class="form-group">
@@ -121,15 +129,15 @@
               class="form-control"
               id="description"
               rows="3"
-              formControlName="descriptions"
+              formControlName="Descriptions"
             ></textarea>
           </div>
-          <div class="form-group">
-            <label for="exampleFormControlSelect1">Parent</label>
+          <div class="form-group" *ngIf="isSubCategory">
+            <label for="exampleFormControlSelect1">Category</label>
             <select
               class="form-control"
               id="exampleFormControlSelect1"
-              formControlName="parent"
+              formControlName="ParentID"
             >
               <option
                 *ngFor="let parent of parents"
